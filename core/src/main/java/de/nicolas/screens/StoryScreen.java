@@ -159,9 +159,106 @@ public class StoryScreen extends BaseScreen {
         scene.start();
     }
 
-    public void scienceLab(){}
+    public void scienceLab(){
+        scene.clearSegments();
+        background.setAnimation(background.scienceLab);
+        dialogBox.setText(" ");
+        kelsoe.addAction(SceneActions.moveToOutsideLeft(0));
 
-    public void library(){}
+        scene.addSegment(new SceneSegment(background, Actions.fadeIn(1)));
+        scene.addSegment(new SceneSegment(kelsoe, SceneActions.moveToScreenCenter(1)));
+        scene.addSegment(new SceneSegment(dialogBox, Actions.show()));
+
+        addTextSequence("Dies ist unser Wissenschaftslabor!");
+        scene.addSegment( new SceneSegment(kelsoe, SceneActions.setAnimation( kelsoe.sad)));
+        addTextSequence("Meine Hausarbeit ist nicht hier!");
+        scene.addSegment( new SceneSegment(kelsoe, SceneActions.setAnimation( kelsoe.normal)));
+        addTextSequence("Wohin soll ich denn jetzt gehen?");
+
+        scene.addSegment(new SceneSegment(buttonTable, Actions.show()));
+
+        TextButton classroomButton = new TextButton("Gehe zurück ins Klassenzimmer!",
+            BaseGame.textButtonStyle);
+        classroomButton.addListener(
+            (Event e) ->{
+                if (!(e instanceof InputEvent) ||
+                    !((InputEvent)e).getType().equals(InputEvent.Type.touchDown)){
+                    return false;
+                }
+                scene.addSegment(new SceneSegment(buttonTable, Actions.hide()));
+                addTextSequence("Vielleicht hat sie ja einer gefunden ond dort deponiert!");
+                scene.addSegment(new SceneSegment(dialogBox, Actions.hide()));
+                scene.addSegment(new SceneSegment(kelsoe, SceneActions.moveToOutsideRight(1)));
+                scene.addSegment(new SceneSegment(background, Actions.fadeOut(1)));
+                scene.addSegment(new SceneSegment(background, Actions.run(
+                    () -> {
+                        classroom();
+                    }
+                )));
+                return false;
+            }
+        );
+
+        TextButton libraryButton = new TextButton("Schaue in der Bücherei nach!",
+            BaseGame.textButtonStyle);
+        libraryButton.addListener(
+            (Event e) ->{
+                if (!(e instanceof InputEvent) ||
+                    !((InputEvent)e).getType().equals(InputEvent.Type.touchDown)){
+                    return false;
+                }
+                scene.addSegment(new SceneSegment(buttonTable, Actions.hide()));
+                addTextSequence("Supper Idee! Vielleicht habe ich sie da vergessen!");
+                scene.addSegment(new SceneSegment(dialogBox, Actions.hide()));
+                scene.addSegment(new SceneSegment(kelsoe, SceneActions.moveToOutsideLeft(1)));
+                scene.addSegment(new SceneSegment(background, Actions.fadeOut(1)));
+                scene.addSegment(new SceneSegment(background, Actions.run(
+                    () -> {
+                        library();
+                    }
+                )));
+                return false;
+            }
+        );
+
+        buttonTable.clearChildren();
+        buttonTable.add(classroomButton);
+        buttonTable.row();
+        buttonTable.add(libraryButton);
+
+        scene.start();
+    }
+
+    public void library(){
+        scene.clearSegments();
+
+        background.setAnimation( background.library );
+        dialogBox.setText("");
+        kelsoe.addAction( SceneActions.moveToOutsideLeft(0) );
+
+        scene.addSegment( new SceneSegment( background, Actions.fadeIn(1) ));
+        scene.addSegment( new SceneSegment( kelsoe, SceneActions.moveToScreenCenter(1) ));
+        scene.addSegment( new SceneSegment( dialogBox, Actions.show() ));
+
+        addTextSequence( "Das ist die Bücherei!");
+        addTextSequence( "Lasst mich mal da schauen, wo ich zuletzt gearbeitet habe!" );
+
+        scene.addSegment( new SceneSegment( kelsoe, SceneActions.setAnimation( kelsoe.lookRight )));
+        scene.addSegment( new SceneSegment( kelsoe, SceneActions.moveToScreenRight(2) ));
+        scene.addSegment( new SceneSegment( kelsoe, SceneActions.setAnimation( kelsoe.normal ) ));
+
+        addTextSequence( "Jaaa! Hier ist sie!!!!!" );
+
+        scene.addSegment( new SceneSegment( kelsoe, SceneActions.moveToScreenCenter(0.5f) ));
+
+        addTextSequence( "Danke, dass du mir geholfen hast");
+        scene.addSegment( new SceneSegment( dialogBox, Actions.hide() ));
+        scene.addSegment( new SceneSegment( theEnd, Actions.fadeIn(4) ));
+        scene.addSegment( new SceneSegment( background, Actions.delay(10) ));
+        scene.addSegment( new SceneSegment( background, Actions.run(
+            () -> { BaseGame.setActiveScreen(new MenuScreen()); }) ));
+        scene.start();
+    }
 
     @Override
     public void update(float delta) {

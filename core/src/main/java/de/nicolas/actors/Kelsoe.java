@@ -13,7 +13,7 @@ public class Kelsoe extends BaseActor {
 
     public Kelsoe(float x, float y, Stage stage) {
         super(x, y, stage);
-        normal = loadTexture("qssets/kelsoe-normal.png");
+        normal = loadTexture("assets/kelsoe-normal.png");
         sad = loadTexture("assets/kelsoe-sad.png");
         lookLeft = loadTexture("assets/kelsoe-look-left.png");
         lookRight = loadTexture("assets/kelsoe-look-right.png");
